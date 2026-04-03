@@ -272,11 +272,14 @@
             successDiv.style.display = 'block';
             
             // 生成标准的WiFi二维码格式
-            let wifiString = `WIFI:S:${ssid};T:${encryption};`;
-            if (encryption !== 'nopass') {
-                wifiString += `P:${password};`;
+            let wifiString;
+            if (encryption === 'nopass') {
+                wifiString = `WIFI:S:${ssid};T:nopass;;`;
+            } else {
+                wifiString = `WIFI:S:${ssid};T:${encryption};P:${password};;`;
             }
-            wifiString += ';;';
+            
+            console.log('生成的WiFi字符串:', wifiString);
             
             const qrcodeDiv = document.getElementById('qrcode');
             qrcodeDiv.innerHTML = '';
