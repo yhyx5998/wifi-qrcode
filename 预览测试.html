@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi二维码生成器 - 预览测试</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        .test-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .qrcode-box {
+            text-align: center;
+            margin: 30px 0;
+        }
+        #platformQRCode {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+        .input {
+            width: 100%;
+            height: 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 0 15px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .input:focus {
+            outline: none;
+            border-color: #07c160;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .radio-item input {
+            margin-right: 8px;
+        }
+        .btn {
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(135deg, #07c160 0%, #06ae56 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(7,193,96,0.3);
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        #customerQRCode {
+            width: 250px;
+            height: 250px;
+            margin: 20px auto;
+        }
+        .wifi-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .info-label {
+            color: #666;
+        }
+        .info-value {
+            color: #333;
+            font-weight: 500;
+        }
+        .tips {
+            background: #fff9e6;
+            border-left: 4px solid #faad14;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #856404;
+            line-height: 1.6;
+        }
+        .error {
+            color: #ff4d4f;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+        .success {
+            color: #52c41a;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+        .github-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .github-link a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .github-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">WiFi二维码生成器 - 预览测试</div>
+            <div class="subtitle">测试完整流程：平台 → 商家 → 顾客</div>
+        </div>
+        
+        <!-- 平台二维码测试 -->
+        <div class="test-section">
+            <div class="section-title">1. 平台二维码（商家扫码用）</div>
+            <div class="qrcode-box">
+                <div id="platformQRCode"></div>
+                <p style="margin-top: 10px; color: #666;">商家用微信扫描此二维码</p>
+            </div>
+            <div class="tips">
+                <strong>📱 商家操作：</strong><br>
+                1. 用微信扫描上面的二维码<br>
+                2. 自动进入生成页面<br>
+                3. 输入WiFi信息
+            </div>
+        </div>
+        
+        <!-- 生成二维码测试 -->
+        <div class="test-section">
+            <div class="section-title">2. 生成二维码（商家操作）</div>
+            
+            <div class="form-group">
+                <label class="label">WiFi名称</label>
+                <input type="text" id="ssid" class="input" placeholder="请输入WiFi名称" value="TestWiFi">
+            </div>
+            
+            <div class="form-group">
+                <label class="label">WiFi密码</label>
+                <input type="text" id="password" class="input" placeholder="请输入WiFi密码" value="password123">
+            </div>
+            
+            <div class="form-group">
+                <label class="label">加密方式</label>
+                <div class="radio-group">
+                    <label class="radio-item">
+                        <input type="radio" name="encryption" value="WPA" checked>
+                        <span>WPA/WPA2</span>
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" name="encryption" value="WEP">
+                        <span>WEP</span>
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" name="encryption" value="nopass">
+                        <span>无密码</span>
+                    </label>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="generateQRCode()">生成二维码</button>
+            <div class="error" id="error"></div>
+            <div class="success" id="success"></div>
+            
+            <div id="qrcodeSection" style="display: none;">
+                <div class="qrcode-box">
+                    <div id="customerQRCode"></div>
+                    <p style="margin-top: 10px; color: #666;">顾客用微信扫描此二维码</p>
+                </div>
+                <div class="wifi-info">
+                    <div class="info-row">
+                        <span class="info-label">WiFi名称：</span>
+                        <span class="info-value" id="showSsid"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">WiFi密码：</span>
+                        <span class="info-value" id="showPassword"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tips">
+                <strong>💡 顾客操作：</strong><br>
+                1. 用微信扫描生成的二维码<br>
+                2. 自动弹出"连接WiFi"提示<br>
+                3. 点击"连接"即可
+            </div>
+        </div>
+        
+        <!-- GitHub Pages链接 -->
+        <div class="github-link">
+            <p>🔗 线上访问链接：</p>
+            <a href="https://yhyx5998.github.io/wifi-qrcode/平台二维码.html" target="_blank">https://yhyx5998.github.io/wifi-qrcode/平台二维码.html</a>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // 生成平台二维码
+            const platformUrl = 'https://yhyx5998.github.io/wifi-qrcode/生成二维码.html';
+            new QRCode(document.getElementById('platformQRCode'), {
+                text: platformUrl,
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+        };
+        
+        function generateQRCode() {
+            const ssid = document.getElementById('ssid').value.trim();
+            const password = document.getElementById('password').value;
+            const encryption = document.querySelector('input[name="encryption"]:checked').value;
+            const errorDiv = document.getElementById('error');
+            const successDiv = document.getElementById('success');
+            
+            if (!ssid) {
+                errorDiv.textContent = '请输入WiFi名称';
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+                return;
+            }
+            
+            if (encryption !== 'nopass' && !password) {
+                errorDiv.textContent = '请输入WiFi密码';
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+                return;
+            }
+            
+            errorDiv.style.display = 'none';
+            successDiv.textContent = '二维码生成成功！';
+            successDiv.style.display = 'block';
+            
+            // 生成标准的WiFi二维码格式
+            let wifiString;
+            if (encryption === 'nopass') {
+                wifiString = `WIFI:S:${ssid};T:nopass;;`;
+            } else {
+                wifiString = `WIFI:S:${ssid};T:${encryption};P:${password};;`;
+            }
+            
+            // 生成二维码
+            const qrcodeDiv = document.getElementById('customerQRCode');
+            qrcodeDiv.innerHTML = '';
+            
+            new QRCode(qrcodeDiv, {
+                text: wifiString,
+                width: 250,
+                height: 250,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+            
+            // 显示WiFi信息
+            document.getElementById('showSsid').textContent = ssid;
+            document.getElementById('showPassword').textContent = encryption === 'nopass' ? '无密码' : password;
+            document.getElementById('qrcodeSection').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

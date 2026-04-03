@@ -128,11 +128,9 @@
 
     <script>
         window.onload = function() {
-            // 生成指向生成页面的二维码
-            const currentUrl = window.location.href;
-            const generateUrl = currentUrl.replace('平台二维码.html', '生成二维码.html');
+            // 直接使用固定的生成页面链接
+            const generateUrl = 'https://yhyx5998.github.io/wifi-qrcode/生成二维码.html';
             
-            console.log('当前URL:', currentUrl);
             console.log('生成页面URL:', generateUrl);
             
             new QRCode(document.getElementById('qrcode'), {

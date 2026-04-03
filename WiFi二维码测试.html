@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi二维码测试</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .qrcode-box {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .qrcode {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        .wifi-string {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+            word-break: break-all;
+        }
+        .info {
+            background: #e6f7ff;
+            border-left: 4px solid #1890ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #0050b3;
+            line-height: 1.6;
+        }
+        .test-btn {
+            background: #1890ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .test-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">WiFi二维码测试</div>
+            <div class="subtitle">验证不同格式的WiFi二维码</div>
+        </div>
+        
+        <!-- 测试1：标准格式 -->
+        <div class="test-section">
+            <div class="section-title">1. 标准格式（推荐）</div>
+            <div class="qrcode-box">
+                <div class="qrcode" id="qrcode1"></div>
+            </div>
+            <div class="wifi-string" id="string1"></div>
+            <div class="info">
+                <strong>格式：</strong>WIFI:S:ssid;T:WPA;P:password;;<br>
+                <strong>说明：</strong>标准的WiFi二维码格式，微信应该能识别并显示一键连接按钮
+            </div>
+        </div>
+        
+        <!-- 测试2：无密码 -->
+        <div class="test-section">
+            <div class="section-title">2. 无密码格式</div>
+            <div class="qrcode-box">
+                <div class="qrcode" id="qrcode2"></div>
+            </div>
+            <div class="wifi-string" id="string2"></div>
+            <div class="info">
+                <strong>格式：</strong>WIFI:S:ssid;T:nopass;;<br>
+                <strong>说明：</strong>无密码WiFi的标准格式
+            </div>
+        </div>
+        
+        <!-- 测试3：替代格式 -->
+        <div class="test-section">
+            <div class="section-title">3. 替代格式</div>
+            <div class="qrcode-box">
+                <div class="qrcode" id="qrcode3"></div>
+            </div>
+            <div class="wifi-string" id="string3"></div>
+            <div class="info">
+                <strong>格式：</strong>WIFI:T:WPA;S:ssid;P:password;;<br>
+                <strong>说明：</strong>参数顺序不同的格式
+            </div>
+        </div>
+        
+        <!-- 测试4：简化格式 -->
+        <div class="test-section">
+            <div class="section-title">4. 简化格式</div>
+            <div class="qrcode-box">
+                <div class="qrcode" id="qrcode4"></div>
+            </div>
+            <div class="wifi-string" id="string4"></div>
+            <div class="info">
+                <strong>格式：</strong>WIFI:S:ssid;P:password;<br>
+                <strong>说明：</strong>简化的格式，只包含名称和密码
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // 测试1：标准格式
+            const wifiString1 = 'WIFI:S:TestWiFi;T:WPA;P:password123;;';
+            document.getElementById('string1').textContent = wifiString1;
+            new QRCode(document.getElementById('qrcode1'), {
+                text: wifiString1,
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+            
+            // 测试2：无密码格式
+            const wifiString2 = 'WIFI:S:TestWiFi;T:nopass;;';
+            document.getElementById('string2').textContent = wifiString2;
+            new QRCode(document.getElementById('qrcode2'), {
+                text: wifiString2,
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+            
+            // 测试3：替代格式
+            const wifiString3 = 'WIFI:T:WPA;S:TestWiFi;P:password123;;';
+            document.getElementById('string3').textContent = wifiString3;
+            new QRCode(document.getElementById('qrcode3'), {
+                text: wifiString3,
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+            
+            // 测试4：简化格式
+            const wifiString4 = 'WIFI:S:TestWiFi;P:password123;';
+            document.getElementById('string4').textContent = wifiString4;
+            new QRCode(document.getElementById('qrcode4'), {
+                text: wifiString4,
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+        };
+    </script>
+</body>
+</html>
