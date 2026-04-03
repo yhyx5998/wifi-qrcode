@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平台二维码 - WiFi二维码生成器</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .header {
+            margin-bottom: 30px;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+        .qrcode-box {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        #qrcode {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto;
+        }
+        .info {
+            background: #e6f7ff;
+            border-left: 4px solid #1890ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 14px;
+            color: #0050b3;
+            line-height: 1.6;
+        }
+        .btn {
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(135deg, #07c160 0%, #06ae56 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(7,193,96,0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+        }
+        .tips {
+            background: #fff9e6;
+            border-left: 4px solid #faad14;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #856404;
+            line-height: 1.6;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">平台二维码</div>
+            <div class="subtitle">商家扫描此二维码生成WiFi二维码</div>
+        </div>
+        
+        <div class="qrcode-box">
+            <div id="qrcode"></div>
+        </div>
+        
+        <div class="info">
+            <strong>📱 使用说明：</strong><br>
+            1. 商家使用微信扫一扫<br>
+            2. 扫描后进入WiFi二维码生成页面<br>
+            3. 输入WiFi名称和密码<br>
+            4. 生成顾客可扫描的二维码
+        </div>
+        
+        <a href="生成二维码.html" class="btn">直接打开生成页面</a>
+        <button class="btn btn-secondary" onclick="downloadQRCode()">保存平台二维码</button>
+        
+        <div class="tips">
+            <strong>💡 提示：</strong><br>
+            • 此二维码可打印后放置在店铺显眼位置<br>
+            • 商家扫码后即可自助生成WiFi二维码<br>
+            • 无需安装任何APP，微信扫码即可使用
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // 生成指向生成页面的二维码
+            const generateUrl = location.href.replace('平台二维码.html', '生成二维码.html');
+            
+            new QRCode(document.getElementById('qrcode'), {
+                text: generateUrl,
+                width: 250,
+                height: 250,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+        };
+        
+        function downloadQRCode() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (canvas) {
+                const link = document.createElement('a');
+                link.download = '平台二维码.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            }
+        }
+    </script>
+</body>
+</html>
